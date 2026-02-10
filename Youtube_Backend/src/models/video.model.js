@@ -24,6 +24,12 @@ const videoSchema = new Schema({
       type: Number,
       required: true
    },
+   category: {
+      type: String,
+      required: [true, "category is required"],
+      trim: true,
+      lowercase: true
+   },
    views: {
       type: Number,
       default: 0

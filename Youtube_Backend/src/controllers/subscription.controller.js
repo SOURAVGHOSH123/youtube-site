@@ -127,7 +127,8 @@ const getSubscribedChannels = asyncHandler(async (req, res) => {
       },
       {
          $addFields: {
-            username: "$SubscribedTo.fullname",
+            username: "$SubscribedTo.username",
+            fullname: "$SubscribedTo.fullname",
             email: "$SubscribedTo.email",
             avatar: "$SubscribedTo.avatar",
          }
@@ -136,6 +137,7 @@ const getSubscribedChannels = asyncHandler(async (req, res) => {
          $project: {
             channel: 1,
             // subscriber: 1,
+            fullname: 1,
             username: 1,
             email: 1,
             avatar: 1

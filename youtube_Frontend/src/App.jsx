@@ -1,33 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React, { useEffect, useState } from 'react'
 import './App.css'
+import { ToastContainer } from "react-toastify"
+import { Routes, Route } from 'react-router-dom'
+import { Home, Profile, Signin, Signup } from './pages/index'
+import PrivateRoutes from './routes/PrivateRoutes.jsx'
+import PublicRoutes from './routes/PublicRoutes'
+import { useDispatch, useSelector } from 'react-redux'
+import { findUser } from './utils/userHelper.js'
+import { setUser } from './redux/slice/userSlice'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    findUser(dispatch);
+  }, []);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <ToastContainer position="top-right" autoClose={2000} />
+      <Routes>
+        <Route element={<PublicRoutes />}>
+          <Route path='/signup' element={<Signup />} />
+          <Route path='/signin' element={<Signin />} />
+        </Route>
+        <Route element={<PrivateRoutes />}>
+          <Route path='/' element={<Home />} />
+          <Route path="/:username" element={<Profile />} />
+          <Route path="/:username/edit" element={<Profile />} />
+        </Route>
+      </Routes>
     </>
   )
 }
